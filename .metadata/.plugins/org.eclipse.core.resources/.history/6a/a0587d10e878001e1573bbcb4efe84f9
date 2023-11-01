@@ -1,0 +1,67 @@
+package br.upe.garanhus.esw.pweb.controle;
+
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+
+@WebServlet("/exec02")
+public class Exec02Servlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String name = "Superman";
+        
+     
+        String apiUrl = "https://superheroapi.com/api/6709110715863408/search/" + name;
+        
+
+        HttpURLConnection connection = null;
+        try {
+            URL url = new URL(apiUrl);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            
+  
+            
+           
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+           
+                InputStream inputStream = connection.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                StringBuilder jsonContent = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    jsonContent.append(line);
+                }
+                reader.close();
+                
+            
+                response.setContentType("application/json");
+
+            
+                PrintWriter out = response.getWriter();
+                out.print(jsonContent.toString());
+            } else {
+           
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            }
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+    }
+}

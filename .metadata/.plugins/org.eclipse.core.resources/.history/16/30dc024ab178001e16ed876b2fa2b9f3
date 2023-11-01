@@ -1,0 +1,42 @@
+package br.upe.garanhus.esw.pweb.controle;
+
+import jakarta.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+@WebServlet("/processa-imagem")
+
+public class Exec02Servlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // Endereço da Api
+        String apiUrl = "https://superheroapi.com/api/6709110715863408/1"; 
+
+        // conexão cliente HttpClient
+        HttpClient client = HttpClient.newHttpClient();
+
+        // requisição do GET
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(URI.create(apiUrl))
+                .build();
+
+        try {
+            // Envia a requisição e recebe a resposta
+            HttpResponse<String> httpResponse = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+            // volta a resposta
+            String responseBody = httpResponse.body();
+
+            
+            response.getWriter().write(responseBody);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}

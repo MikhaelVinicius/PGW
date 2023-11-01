@@ -1,0 +1,43 @@
+package br.upe.garanhus.esw.pweb.controle;
+
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+@WebServlet("/exec02")
+public class Exec02Servlet extends HttpServlet {
+    
+    @Override
+    
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Configurar a chamada para a API externa
+        String apiUrl = "https://superheroapi.com/api/6709110715863408/'70'/image";
+        // Fazer a solicitação para a API externa e obter a resposta JSON
+        String jsonResponse = makeApiRequest(apiUrl);
+
+        // Configurar a resposta HTTP
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        // Escrever a resposta JSON de volta para o cliente
+        response.getWriter().write(jsonResponse);
+    }
+
+    private String makeApiRequest(String apiUrl) {
+        // Implemente o código para fazer a solicitação à API externa aqui
+        // Use a biblioteca HTTP que você escolheu para fazer a solicitação
+        // e receber a resposta JSON
+        return null; // Substitua com a resposta real da API
+    }
+    	
+}
+

@@ -1,0 +1,17 @@
+package br.upe.garanhus.esw.pweb.modelo;
+
+public class SuperHeroDAO {
+    public SuperHero getSuperHeroById(int id) {
+        // Lógica para recuperar um super-herói do banco de dados por ID
+    }
+    
+    public List<SuperHero> getAllSuperHeroes() {
+        // Lógica para recuperar todos os super-heróis do banco de dados
+    }
+    
+    public void insertSuperHero(SuperHero superHero) {
+        // Lógica para inserir um super-herói no banco de dados
+    }
+    
+    // Outros métodos relevantes
+}

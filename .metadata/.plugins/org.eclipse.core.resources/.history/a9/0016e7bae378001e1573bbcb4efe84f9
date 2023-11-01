@@ -1,0 +1,49 @@
+package br.upe.garanhus.esw.pweb.controle;
+
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
+
+@WebServlet("/exec02")
+public class Exec02Servlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        HttpGet httpGet = new HttpGet("https://superheroapi.com/api/6709110715863408/name=Batman");
+        CloseableHttpResponse apiResponse = httpclient.execute(httpGet);
+
+        try {
+            System.out.println(apiResponse.getStatusLine());
+            HttpEntity entity = apiResponse.getEntity();
+            String jsonContent = EntityUtils.toString(entity);
+            
+            // Parse the JSON response from the API
+            JSONObject jsonObject = new JSONObject(jsonContent);
+
+            // Set the content type of the response to JSON
+            response.setContentType("application/json");
+
+            // Write the JSON response to the HttpServletResponse output stream
+            PrintWriter out = response.getWriter();
+            out.print(jsonObject.toString());
+        } finally {
+            apiResponse.close();
+        }
+    } }

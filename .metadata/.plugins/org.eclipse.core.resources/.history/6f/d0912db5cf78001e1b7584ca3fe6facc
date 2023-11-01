@@ -1,0 +1,47 @@
+package br.upe.garanhus.esw.pweb.controle;
+
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+@WebServlet("/exec02")
+public class Exec02Servlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // Endereço da API
+        String apiUrl = "https://superheroapi.com/api/6709110715863408/character-id/70";
+
+        // Configuração do cliente HttpClient
+        HttpClient client = HttpClient.newHttpClient();
+
+        // Cria uma requisição GET
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(URI.create(apiUrl))
+                .build();
+
+        try {
+            // Envia a requisição e recebe a resposta
+            HttpResponse<String> httpResponse = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+            // Obtém o corpo da resposta
+            String responseBody = httpResponse.body();
+
+            // Configura o tipo de conteúdo da resposta
+            response.setContentType("text/plain");
+
+            // Escreve a resposta para o cliente
+            PrintWriter out = response.getWriter();
+            out.write(responseBody);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
